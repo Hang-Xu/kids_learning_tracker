@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head><title>All Materials</title></head>
+<body>
+    <h1>All Uploaded Materials</h1>
+    <a href="{{ url_for('index') }}">Back</a><br><br>
+
+    {% if materials %}
+        <ul>
+        {% for id, title, notes, date, file_path in materials %}
+            <li>
+                <strong>{{ title }}</strong> ({{ date }})<br>
+                {{ notes }}<br>
+                {% if file_path %}
+                    {% set filename = file_path.split('/')[-1] %}
+                    {% if filename.endswith('.pdf') %}
+                        <embed src="{{ url_for('uploaded_file', filename=filename) }}" width="600" height="400" type="application/pdf">
+                    {% elif filename.endswith('.png') or filename.endswith('.jpg') or filename.endswith('.jpeg') %}
+                        <img src="{{ url_for('uploaded_file', filename=filename) }}" width="300">
+                    {% else %}
+                        <a href="{{ url_for('uploaded_file', filename=filename) }}">Download File</a>
+                    {% endif %}
+                {% endif %}
+            </li><br>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No materials uploaded yet.</p>
+    {% endif %}
+</body>
+</html>

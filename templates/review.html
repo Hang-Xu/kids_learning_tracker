@@ -1,0 +1,1 @@
+<h1>Review for {{ today }}</h1>{% for id, title, notes, date, file_path in items %}<div><strong>{{ title }}</strong><br>{{ notes }}<br>{% if file_path %}<a href='{{ file_path }}'>View File</a><br>{% endif %}<a href='/mark_reviewed/{{ id }}'>Mark Reviewed</a></div><hr>{% endfor %}<a href='/'>Back</a>
