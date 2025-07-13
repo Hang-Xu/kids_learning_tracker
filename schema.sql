@@ -1,38 +1,45 @@
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password_hash TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS materials (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    title TEXT,
+    title TEXT NOT NULL,
     notes TEXT,
+    upload_date TEXT,
     file_path TEXT,
-    file_type TEXT,
-    FOREIGN KEY(user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE IF NOT EXISTS review_schedule (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
     material_id INTEGER,
-    review_date DATE,
-    completed BOOLEAN DEFAULT 0,
-    FOREIGN KEY(material_id) REFERENCES materials(id)
+    review_date TEXT,
+    done INTEGER DEFAULT 0,
+    FOREIGN KEY (material_id) REFERENCES materials(id)
 );
 
 CREATE TABLE IF NOT EXISTS knowledge (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     material_id INTEGER,
     text TEXT,
-    FOREIGN KEY(material_id) REFERENCES materials(id)
+    FOREIGN KEY (material_id) REFERENCES materials(id)
 );
 
 CREATE TABLE IF NOT EXISTS quizzes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     material_id INTEGER,
     question TEXT,
     answer TEXT,
-    FOREIGN KEY(material_id) REFERENCES materials(id)
+    FOREIGN KEY (material_id) REFERENCES materials(id)
+);
+
+CREATE TABLE IF NOT EXISTS original_text (
+    id SERIAL PRIMARY KEY,
+    material_id INTEGER,
+    text TEXT,
+    FOREIGN KEY (material_id) REFERENCES materials(id)
 );

@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }} - Original Text</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-2">Original Text: {{ title }}</h1>
+        <a href="{{ url_for('materials') }}" class="text-blue-500 hover:underline">&larr; Back to Materials</a>
+
+        <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+            {% if original_text and original_text[0] %}
+                <pre class="text-base whitespace-pre-wrap font-sans">{{ original_text[0] }}</pre>
+            {% else %}
+                <p>No original text was extracted or saved for this material.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

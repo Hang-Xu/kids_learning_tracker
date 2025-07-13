@@ -1,1 +1,20 @@
-<h1>Add Learning Material</h1><form method='post' enctype='multipart/form-data'>Title: <input name='title'><br>Notes: <textarea name='notes'></textarea><br>File: <input name='file' type='file'><br><input type='submit' value='Save'></form><a href='/'>Back</a>
+<!doctype html>
+<html>
+<head>
+    <title>Add Material</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-4">Add New Learning Material</h1>
+        <a href="{{ url_for('index') }}" class="text-blue-500 hover:underline">&larr; Back to Dashboard</a>
+
+        <form method="post" enctype="multipart/form-data" class="mt-8 bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4"><label for="title" class="block text-gray-700">Title</label><input type="text" name="title" id="title" class="w-full px-3 py-2 border rounded-lg" required></div>
+            <div class="mb-4"><label for="notes" class="block text-gray-700">Notes</label><textarea name="notes" id="notes" rows="4" class="w-full px-3 py-2 border rounded-lg"></textarea></div>
+            <div class="mb-6"><label for="file" class="block text-gray-700">Upload File (PDF or Image)</label><input type="file" name="file" id="file" class="w-full px-3 py-2 border rounded-lg"></div>
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Save and Generate AI Content</button>
+        </form>
+    </div>
+</body>
+</html>

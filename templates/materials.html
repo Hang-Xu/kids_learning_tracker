@@ -1,31 +1,44 @@
 <!doctype html>
 <html>
-<head><title>All Materials</title></head>
-<body>
-    <h1>All Uploaded Materials</h1>
-    <a href="{{ url_for('index') }}">Back</a><br><br>
+<head>
+    <title>All Materials</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-4">All Uploaded Materials</h1>
+        <a href="{{ url_for('index') }}" class="text-blue-500 hover:underline">&larr; Back to Dashboard</a>
 
-    {% if materials %}
-        <ul>
-        {% for id, title, notes, date, file_path in materials %}
-            <li>
-                <strong>{{ title }}</strong> ({{ date }})<br>
-                {{ notes }}<br>
-                {% if file_path %}
-                    {% set filename = file_path.split('/')[-1] %}
-                    {% if filename.endswith('.pdf') %}
-                        <embed src="{{ url_for('uploaded_file', filename=filename) }}" width="600" height="400" type="application/pdf">
-                    {% elif filename.endswith('.png') or filename.endswith('.jpg') or filename.endswith('.jpeg') %}
-                        <img src="{{ url_for('uploaded_file', filename=filename) }}" width="300">
-                    {% else %}
-                        <a href="{{ url_for('uploaded_file', filename=filename) }}">Download File</a>
+        <div class="mt-8 space-y-6">
+            {% if materials %}
+                {% for id, title, notes, date, file_path in materials %}
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-semibold">{{ title }}</h2>
+                    <p class="text-sm text-gray-500">Uploaded on: {{ date }}</p>
+                    <p class="mt-2">{{ notes }}</p>
+
+                    {% if file_path %}
+                        <div class="mt-4">
+                            {% set filename = file_path.split('/')[-1] %}
+                            {% if filename.endswith('.pdf') %}
+                                <embed src="{{ url_for('uploaded_file', filename=filename) }}" width="100%" height="400px" type="application/pdf">
+                            {% elif filename.endswith(('.png', '.jpg', '.jpeg')) %}
+                                <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="{{ title }}" class="max-w-sm rounded-lg">
+                            {% endif %}
+                        </div>
                     {% endif %}
-                {% endif %}
-            </li><br>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No materials uploaded yet.</p>
-    {% endif %}
+                    
+                    <div class="mt-4 flex space-x-4">
+                        <a href="{{ url_for('knowledge', material_id=id) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Knowledge</a>
+                        <a href="{{ url_for('quiz', material_id=id) }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Start Quiz</a>
+                        <a href="{{ url_for('original_text', material_id=id) }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">View Original</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No materials have been uploaded yet.</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

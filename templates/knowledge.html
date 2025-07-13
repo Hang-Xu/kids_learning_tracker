@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }} - Knowledge Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-2">Knowledge Summary: {{ title }}</h1>
+        <a href="{{ url_for('materials') }}" class="text-blue-500 hover:underline">&larr; Back to Materials</a>
+
+        <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+            {% if knowledge and knowledge[0] %}
+                <p class="text-lg whitespace-pre-wrap">{{ knowledge[0] }}</p>
+            {% else %}
+                <p>No knowledge summary was generated for this material.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

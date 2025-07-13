@@ -34,22 +34,32 @@ This is a working prototype of a learning tracker web app for kids. It lets you 
 
 1. Install dependencies:
 ```bash
-pip install flask google-generativeai pytesseract Pillow PyMuPDF
+pip install flask google-generativeai pytesseract Pillow PyMuPDF psycopg2-binary
 ```
 
 2. Install Tesseract:
 - macOS: `brew install tesseract`
 - Ubuntu: `sudo apt install tesseract-ocr`
 
-3. Add your [Gemini API Key](https://makersuite.google.com/app/apikey) in `app.py`:
+3. Set up PostgreSQL Database:
+   - Make sure you have a running PostgreSQL server.
+   - Use `psql` or another database tool to create a user and a database for this application.
+   - Example using the `psql` command-line tool:
+     ```sql
+     CREATE DATABASE kids_learning_db;
+     CREATE USER your_db_user WITH PASSWORD 'your_db_password';
+     GRANT ALL PRIVILEGES ON DATABASE kids_learning_db TO your_db_user;
+     ```
 
-```python
-genai.configure(api_key="YOUR_API_KEY_HERE")
-```
+4. Configure the startup script.
+   - Open the `run.sh` file.
+   - Replace the placeholder values for `GEMINI_API_KEY`, `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS` with your actual credentials.
 
-4. Run:
+5. Make the script executable and initialize the database.
+   *(This only needs to be done once)*
 ```bash
-python app.py
+chmod +x run.sh
+./run.sh init-db
 ```
 
 5. Visit: [http://localhost:5000](http://localhost:5000)
