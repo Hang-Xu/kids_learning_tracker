@@ -22,7 +22,7 @@ This is a working prototype of a learning tracker web app for kids. It lets you 
 | Component     | Tool               |
 |---------------|--------------------|
 | Backend       | Flask (Python)     |
-| Database      | SQLite             |
+| Database      | PostgreSQL         |
 | AI Engine     | Google Gemini      |
 | Image OCR     | pytesseract        |
 | PDF Reader    | PyMuPDF            |

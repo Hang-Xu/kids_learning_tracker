@@ -133,39 +133,38 @@ def add():
                 c.execute("INSERT INTO materials (user_id, title, notes, upload_date, file_path) VALUES (%s, %s, %s, %s, %s) RETURNING id",
                           (session['user_id'], title, notes, str(upload_date), file_path))
                 material_id = c.fetchone()[0]
-            
-            # --- AI INTEGRATION ---
-            if file_path:
-                print(f"Processing file for AI content: {file_path}")
-                # 1. Extract text from the saved file
-                extracted_text = extract_text_from_file(file_path)
+                
+                # --- AI INTEGRATION ---
+                if file_path:
+                    print(f"Processing file for AI content: {file_path}")
+                    # 1. Extract text from the saved file
+                    extracted_text = extract_text_from_file(file_path)
 
-                if extracted_text:
-                    # Store the original extracted text
-                    c.execute("INSERT INTO original_text (material_id, text) VALUES (%s, %s)",
-                              (material_id, extracted_text))
+                    if extracted_text:
+                        # Store the original extracted text
+                        c.execute("INSERT INTO original_text (material_id, text) VALUES (%s, %s)",
+                                  (material_id, extracted_text))
 
-                    # 2. Generate knowledge and quiz using Gemini
-                    ai_content = generate_knowledge_and_quiz(extracted_text)
+                        # 2. Generate knowledge and quiz using Gemini
+                        ai_content = generate_knowledge_and_quiz(extracted_text)
 
-                    if ai_content:
-                        # 3. Save the generated content to the database
-                        # Save knowledge summary
-                        c.execute("INSERT INTO knowledge (material_id, text) VALUES (%s, %s)",
-                                  (material_id, ai_content.get('knowledge_summary')))
-                        
-                        # Save quiz questions
-                        for q in ai_content.get('quiz', []):
-                            c.execute("INSERT INTO quizzes (material_id, question, answer) VALUES (%s, %s, %s)",
-                                      (material_id, q.get('question'), q.get('answer')))
-                        print("Successfully saved AI content to database.")
-            
-            days = [0, 1, 3, 7, 14, 30]
-            for day in days:
-                review_date = upload_date + timedelta(days=day)
-                c.execute("INSERT INTO reviews (material_id, review_date) VALUES (%s, %s)",
-                          (material_id, str(review_date)))
-            conn.commit()
+                        if ai_content:
+                            # 3. Save the generated content to the database
+                            # Save knowledge summary
+                            c.execute("INSERT INTO knowledge (material_id, text) VALUES (%s, %s)",
+                                      (material_id, ai_content.get('knowledge_summary')))
+                            
+                            # Save quiz questions
+                            for q in ai_content.get('quiz', []):
+                                c.execute("INSERT INTO quizzes (material_id, question, answer) VALUES (%s, %s, %s)",
+                                          (material_id, q.get('question'), q.get('answer')))
+                            print("Successfully saved AI content to database.")
+                
+                days = [0, 1, 3, 7, 14, 30]
+                for day in days:
+                    review_date = upload_date + timedelta(days=day)
+                    c.execute("INSERT INTO reviews (material_id, review_date) VALUES (%s, %s)",
+                              (material_id, str(review_date)))
         return redirect(url_for('index'))
     return render_template('add.html')
 
